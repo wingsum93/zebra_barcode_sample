@@ -4,31 +4,9 @@
 */
 package com.symbol.barcodesample1;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import com.symbol.emdk.EMDKManager;
-import com.symbol.emdk.EMDKResults;
-import com.symbol.emdk.EMDKManager.EMDKListener;
-import com.symbol.emdk.EMDKManager.FEATURE_TYPE;
-import com.symbol.emdk.barcode.BarcodeManager;
-import com.symbol.emdk.barcode.BarcodeManager.ConnectionState;
-import com.symbol.emdk.barcode.BarcodeManager.ScannerConnectionListener;
-import com.symbol.emdk.barcode.ScanDataCollection;
-import com.symbol.emdk.barcode.Scanner;
-import com.symbol.emdk.barcode.ScannerConfig;
-import com.symbol.emdk.barcode.ScannerException;
-import com.symbol.emdk.barcode.ScannerInfo;
-import com.symbol.emdk.barcode.ScannerResults;
-import com.symbol.emdk.barcode.ScanDataCollection.ScanData;
-import com.symbol.emdk.barcode.Scanner.DataListener;
-import com.symbol.emdk.barcode.Scanner.StatusListener;
-import com.symbol.emdk.barcode.Scanner.TriggerType;
-import com.symbol.emdk.barcode.StatusData.ScannerStates;
-import com.symbol.emdk.barcode.StatusData;
-
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -40,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -48,9 +27,30 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.content.Context;
-import android.content.pm.ActivityInfo;
+
+import com.symbol.emdk.EMDKManager;
+import com.symbol.emdk.EMDKManager.EMDKListener;
+import com.symbol.emdk.EMDKManager.FEATURE_TYPE;
+import com.symbol.emdk.EMDKResults;
+import com.symbol.emdk.barcode.BarcodeManager;
+import com.symbol.emdk.barcode.BarcodeManager.ConnectionState;
+import com.symbol.emdk.barcode.BarcodeManager.ScannerConnectionListener;
+import com.symbol.emdk.barcode.ScanDataCollection;
+import com.symbol.emdk.barcode.ScanDataCollection.ScanData;
+import com.symbol.emdk.barcode.Scanner;
+import com.symbol.emdk.barcode.Scanner.DataListener;
+import com.symbol.emdk.barcode.Scanner.StatusListener;
+import com.symbol.emdk.barcode.Scanner.TriggerType;
+import com.symbol.emdk.barcode.ScannerConfig;
+import com.symbol.emdk.barcode.ScannerException;
+import com.symbol.emdk.barcode.ScannerInfo;
+import com.symbol.emdk.barcode.ScannerResults;
+import com.symbol.emdk.barcode.StatusData;
+import com.symbol.emdk.barcode.StatusData.ScannerStates;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class MainActivity extends Activity implements EMDKListener, DataListener, StatusListener, ScannerConnectionListener, OnCheckedChangeListener {
 
