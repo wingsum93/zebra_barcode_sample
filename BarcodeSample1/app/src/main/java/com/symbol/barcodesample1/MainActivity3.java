@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -53,7 +52,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity2 extends Activity implements EMDKListener, DataListener, StatusListener, ScannerConnectionListener, OnCheckedChangeListener {
+public class MainActivity3 extends Activity implements EMDKListener, DataListener, StatusListener, ScannerConnectionListener, OnCheckedChangeListener {
 
     private EMDKManager emdkManager = null;
     private BarcodeManager barcodeManager = null;
@@ -83,20 +82,18 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
 
     private String [] triggerStrings = {"HARD", "SOFT"};
 
-
-    private String t = "Mainactivity22";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(t,"oncreatee");
-        deviceList = new ArrayList<>();
+		
+		deviceList = new ArrayList<>();
 
 		EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 		if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
-			textViewStatus.setText("Status: " + "EMDKManager object request failed!");
+//			throw Exception("SSS");
 		}
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);//no use
         setDefaultOrientation();
 
         setMyView();
@@ -370,7 +367,7 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
 
                 if ((scannerIndex != position) || (scanner==null)) {
                     scannerIndex = position;
-                    deInitScanner();
+                    deInitScanner();//pre start clean
                     initScanner();
                     setTrigger();
                     setDecoders();
@@ -450,7 +447,7 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
         });
     }
 
-    private void enumerateScannerDevices() {
+    private void enumerateScannerDevices() {//getsupport device list
 
         if (barcodeManager != null) {
 
@@ -475,7 +472,7 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
                 textViewStatus.setText("Status: " + "Failed to get the list of supported scanner devices! Please close and restart the application.");
             }
 
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_spinner_item, friendlyNameList);
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MainActivity3.this, android.R.layout.simple_spinner_item, friendlyNameList);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             spinnerScannerDevicesSpinner.setAdapter(spinnerAdapter);
@@ -484,7 +481,7 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
 
     private void populateTriggers() {
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_spinner_item, triggerStrings);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MainActivity3.this, android.R.layout.simple_spinner_item, triggerStrings);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerTriggersSpinner.setAdapter(spinnerAdapter);
@@ -539,11 +536,7 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
 
                 // Submit a new read.
                 scanner.read();
-
-                if (checkBoxContinuous.isChecked())
-                    bContinuousMode = true;
-                else
-                    bContinuousMode = false;
+                bContinuousMode = false;
 
                 new AsyncUiControlUpdate().execute(false);
 
@@ -605,17 +598,13 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
         }
     }
 
-    private void deInitScanner() {
+    private void deInitScanner() {//cancel previous scanner
 
         if (scanner != null) {
-
             try {
-
                 scanner.cancelRead();
                 scanner.disable();
-
             } catch (ScannerException e) {
-
                 textViewStatus.setText("Status: " + e.getMessage());
             }
             scanner.removeDataListener(this);
@@ -623,10 +612,8 @@ public class MainActivity2 extends Activity implements EMDKListener, DataListene
             try{
                 scanner.release();
             } catch (ScannerException e) {
-
                 textViewStatus.setText("Status: " + e.getMessage());
             }
-
             scanner = null;
         }
     }
